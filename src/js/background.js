@@ -35,7 +35,7 @@ chrome.runtime.onConnect.addListener((port) => {
       if (newConnectionState.status === "HOSTING") {
         const portForActiveTab = portsForTabs.get(currentActiveTab);
         if (portForActiveTab) {
-          portForActiveTab.postMessage({ type: "startRecording" });
+          portForActiveTab.postMessage({ action: "startRecording" });
         }
       }
     });
@@ -51,7 +51,7 @@ chrome.runtime.onConnect.addListener((port) => {
 
     if (tabInfo === currentActiveTab) {
       if (connectionState.status === "HOSTING") {
-        port.postMessage({ type: "startRecording" });
+        port.postMessage({ action: "startRecording" });
       }
     }
   }

@@ -1,7 +1,14 @@
 import * as rrweb from "@yunyu/rrweb-patched";
 
-console.log("hello 3");
-console.log(rrweb);
-
 const port = chrome.runtime.connect({ name: "tab" });
-port.onMessage.addListener((msg) => console.log(msg));
+port.onMessage.addListener((msg) => {
+  if (msg.action === "startRecording") {
+    let i = 0;
+    rrweb.record({
+      emit(event, isCheckout) {
+        console.log(event, isCheckout, i++);
+      },
+      checkoutEveryNth: 100,
+    });
+  }
+});
