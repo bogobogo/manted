@@ -47,6 +47,8 @@ chrome.runtime.onConnect.addListener((port) => {
     portsForTabs.set(tabInfo, port);
     port.onDisconnect.addListener(() => portsForTabs.delete(tabInfo));
 
+    console.log("Content script connect", tabInfo, currentActiveTab);
+
     if (tabInfo === currentActiveTab) {
       if (connectionState.status === "HOSTING") {
         port.postMessage({ type: "startRecording" });
