@@ -18,10 +18,20 @@ const HostView = ({ roomName }) => {
 };
 
 const App = () => {
-  // undefined | { hosting: boolean, roomName: string }
+  // undefined | { connected: boolean, hosting: boolean, roomName: string }
   const [room, setRoom] = useState(undefined);
+  const writeRoom = (room) => chrome.storage.local.set({ currentRoom: room });
 
   useEffect(() => {
+    chrome.storage.local.get(["currentRoom"], (result) => {
+      console.log("get result", result);
+      if (result.currentRoom) {
+        setRoom(result.currentRoom);
+      } else {
+        setRoom({ connected: false });
+      }
+    });
+
     const listener = (request, sender, sendResponse) => {
       if (request.msg === "something_completed") {
         //  To do something
@@ -33,9 +43,9 @@ const App = () => {
     return () => chrome.runtime.onMessage.removeListener(listener);
   }, []);
 
-  return (
+  return room ? (
     <div style={{ padding: 24 }}>
-      {room ? (
+      {room.connected ? (
         room.hosting ? (
           <HostView roomName={room.roomName} />
         ) : (
@@ -60,7 +70,13 @@ const App = () => {
             <button
               style={{ margin: 0, width: "100%" }}
               onClick={() => {
-                setRoom({ hosting: true, roomName: cuid.slug() });
+                const hostingRoom = {
+                  connected: true,
+                  hosting: true,
+                  roomName: cuid.slug(),
+                };
+                setRoom(hostingRoom);
+                writeRoom(hostingRoom);
               }}
             >
               Make Room
@@ -69,7 +85,7 @@ const App = () => {
         </>
       )}
     </div>
-  );
+  ) : null;
 };
 
 export default hot(module)(App);
