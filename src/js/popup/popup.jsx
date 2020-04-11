@@ -19,7 +19,7 @@ const HostView = ({ roomName }) => {
 
 const App = () => {
   // undefined | { hosting: boolean, roomName: string }
-  const [room, setRoom] = useState(() => JSON.parse(chrome.storage.local));
+  const [room, setRoom] = useState(undefined);
 
   useEffect(() => {
     const listener = (request, sender, sendResponse) => {
