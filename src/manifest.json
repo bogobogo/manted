@@ -5,14 +5,7 @@
     "page": "background.html",
     "persistent": true
   },
-  "permissions": [
-    "activeTab",
-    "background",
-    "http://*/*",
-    "https://*/*",
-    "tabs",
-    "storage"
-  ],
+  "permissions": ["activeTab", "background", "*://*/*", "tabs", "storage"],
   "browser_action": {
     "default_popup": "popup.html",
     "default_icon": "icon-34.png"
@@ -21,5 +14,11 @@
     "128": "icon-128.png"
   },
   "manifest_version": 2,
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.bundle.js"]
+    }
+  ]
 }
