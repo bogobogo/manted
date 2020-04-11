@@ -22,7 +22,16 @@ chrome.tabs.query({ active: true, lastFocusedWindow: true }, ([res]) => {
 });
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
-  currentActiveTab = getTabKey(activeInfo);
+  const newActiveTab = getTabKey(activeInfo);
+
+  if (currentActiveTab !== newActiveTab) {
+    const portForCurrentActiveTab = portsForTabs.get(currentActiveTab);
+    if (portForCurrentActiveTab) {
+      portForCurrentActiveTab.postMessage({ action: "stopRecording" });
+    }
+  }
+
+  currentActiveTab = newActiveTab;
 });
 
 const portsForTabs = new Map();
@@ -32,10 +41,13 @@ chrome.runtime.onConnect.addListener((port) => {
     port.postMessage(connectionState);
     port.onMessage.addListener((newConnectionState) => {
       connectionState = newConnectionState;
-      if (newConnectionState.status === "HOSTING") {
-        const portForActiveTab = portsForTabs.get(currentActiveTab);
-        if (portForActiveTab) {
+
+      const portForActiveTab = portsForTabs.get(currentActiveTab);
+      if (portForActiveTab) {
+        if (newConnectionState.status === "HOSTING") {
           portForActiveTab.postMessage({ action: "startRecording" });
+        } else {
+          portForActiveTab.postMessage({ action: "stopRecording" });
         }
       }
     });
