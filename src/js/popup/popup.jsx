@@ -3,7 +3,7 @@ import icon from "../../img/icon-128.png";
 import { hot } from "react-hot-loader";
 import cuid from "cuid";
 
-const HostView = ({ roomName }) => {
+const HostView = ({ roomName, onStop }) => {
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8082");
 
@@ -14,7 +14,14 @@ const HostView = ({ roomName }) => {
     return () => ws.close();
   }, []);
 
-  return <div>Hosting {roomName}</div>;
+  return (
+    <div>
+      <div>Hosting {roomName}</div>
+      <button class="error" style={{ width: "100%" }} onClick={onStop}>
+        Stop sharing
+      </button>
+    </div>
+  );
 };
 
 const App = () => {
@@ -44,10 +51,17 @@ const App = () => {
   }, []);
 
   return room ? (
-    <div style={{ padding: 24 }}>
+    <div style={{ padding: 24, width: "300px" }}>
       {room.connected ? (
         room.hosting ? (
-          <HostView roomName={room.roomName} />
+          <HostView
+            roomName={room.roomName}
+            onStop={() => {
+              const disconnectedRoom = { connected: false };
+              setRoom(disconnectedRoom);
+              writeRoom(disconnectedRoom);
+            }}
+          />
         ) : (
           <h1>askdhjkoashdas</h1>
         )
@@ -56,7 +70,6 @@ const App = () => {
           <div
             style={{
               display: "flex",
-              width: "300px",
               paddingBottom: "24px",
               borderBottom: "1px solid #ccc",
             }}
