@@ -18,11 +18,23 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      {recv.map((msg) => (
-        <p>{msg}</p>
-      ))}
-      <button>Test</button>
+    <div style={{ padding: 24 }}>
+      <div
+        style={{
+          display: "flex",
+          width: "300px",
+          paddingBottom: "24px",
+          borderBottom: "1px solid #ccc",
+        }}
+      >
+        <input type="text" placeholder="Enter room code" />
+        <button style={{ flexShrink: 0, margin: 0, marginLeft: 8 }}>
+          Join
+        </button>
+      </div>
+      <div style={{ paddingTop: "24px" }}>
+        <button style={{ margin: 0, width: "100%" }}>Make Room</button>
+      </div>
     </div>
   );
 };
