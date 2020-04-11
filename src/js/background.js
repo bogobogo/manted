@@ -32,9 +32,11 @@ chrome.runtime.onConnect.addListener((port) => {
     port.postMessage(connectionState);
     port.onMessage.addListener((newConnectionState) => {
       connectionState = newConnectionState;
-
       if (newConnectionState.status === "HOSTING") {
-        port.postMessage({ type: "startRecording" });
+        const portForActiveTab = portsForTabs.get(currentActiveTab);
+        if (portForActiveTab) {
+          portForActiveTab.postMessage({ type: "startRecording" });
+        }
       }
     });
   } else if (port.name === "tab") {

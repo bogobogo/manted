@@ -44,7 +44,7 @@ const App = () => {
             }}
           />
         ) : (
-          <h1>askdhjkoashdas</h1>
+          <div>{JSON.stringify(room)}</div>
         )
       ) : (
         <>
