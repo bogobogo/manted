@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import icon from "../../img/icon-128.png";
 import { hot } from "react-hot-loader";
+import cuid from "cuid";
+
+const HostView = ({ secret }) => {
+  return <div>Secret: {secret}</div>;
+};
 
 const App = () => {
   const [recv, setRecv] = useState([]);
@@ -29,7 +34,7 @@ const App = () => {
       >
         <input type="text" placeholder="Enter room code" />
         <button style={{ flexShrink: 0, margin: 0, marginLeft: 8 }}>
-          Join
+          Join {cuid.slug()}
         </button>
       </div>
       <div style={{ paddingTop: "24px" }}>
