@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import icon from "../../img/icon-128.png";
 import { hot } from "react-hot-loader";
 import cuid from "cuid";
 
 const HostView = ({ roomName, onStop }) => {
-  useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8082");
-
-    ws.addEventListener("open", () => {
-      ws.send(JSON.stringify({ type: "makeRoom", roomName }));
-    });
-
-    return () => ws.close();
-  }, []);
-
   return (
     <div>
       <div>Hosting {roomName}</div>
@@ -25,41 +15,32 @@ const HostView = ({ roomName, onStop }) => {
 };
 
 const App = () => {
+  const socket = useRef(null);
   // undefined | { connected: boolean, hosting: boolean, roomName: string }
-  const [room, setRoom] = useState(undefined);
-  const writeRoom = (room) => chrome.storage.local.set({ currentRoom: room });
+  const [room, updateRoom] = useState(undefined);
+  const setRoom = (room) => {
+    console.log("setroom called");
+    updateRoom(room);
+    socket.current.postMessage(room);
+  };
 
   useEffect(() => {
-    chrome.storage.local.get(["currentRoom"], (result) => {
-      console.log("get result", result);
-      if (result.currentRoom) {
-        setRoom(result.currentRoom);
-      } else {
-        setRoom({ connected: false });
-      }
+    console.log("connecting");
+    socket.current = chrome.runtime.connect({ name: "popup" });
+    socket.current.onMessage.addListener((msg) => {
+      console.log("received msg from popup", msg);
+      updateRoom(msg);
     });
-
-    const listener = (request, sender, sendResponse) => {
-      if (request.msg === "something_completed") {
-        //  To do something
-        setRecv((recv) => [...recv, request.data.content]);
-      }
-    };
-
-    chrome.runtime.onMessage.addListener(listener);
-    return () => chrome.runtime.onMessage.removeListener(listener);
   }, []);
 
   return room ? (
     <div style={{ padding: 24, width: "300px" }}>
-      {room.connected ? (
-        room.hosting ? (
+      {room.status !== "DISCONNECTED" ? (
+        room.status === "HOSTING" ? (
           <HostView
             roomName={room.roomName}
             onStop={() => {
-              const disconnectedRoom = { connected: false };
-              setRoom(disconnectedRoom);
-              writeRoom(disconnectedRoom);
+              setRoom({ status: "DISCONNECTED" });
             }}
           />
         ) : (
@@ -83,13 +64,10 @@ const App = () => {
             <button
               style={{ margin: 0, width: "100%" }}
               onClick={() => {
-                const hostingRoom = {
-                  connected: true,
-                  hosting: true,
+                setRoom({
+                  status: "HOSTING",
                   roomName: cuid.slug(),
-                };
-                setRoom(hostingRoom);
-                writeRoom(hostingRoom);
+                });
               }}
             >
               Make Room

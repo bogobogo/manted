@@ -1,13 +1,19 @@
 import "../img/icon-128.png";
 import "../img/icon-34.png";
 
-window.setInterval(() => {
-  console.log("sending");
-  chrome.runtime.sendMessage({
-    msg: "something_completed",
-    data: {
-      subject: "Loading",
-      content: "Just completed!",
-    },
-  });
-}, 5000);
+/* 
+type ConnectionState = {
+    status: "HOSTING" | "VIEWING"
+    roomName: string
+} | { status: "DISCONNECTED" }
+*/
+let connectionState = { status: "DISCONNECTED" };
+
+chrome.runtime.onConnect.addListener((port) => {
+  if (port.name === "popup") {
+    port.postMessage(connectionState);
+    port.onMessage.addListener((newConnectionState) => {
+      connectionState = newConnectionState;
+    });
+  }
+});
