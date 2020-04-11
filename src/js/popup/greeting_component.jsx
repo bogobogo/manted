@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import icon from "../../img/icon-128.png";
 import { hot } from "react-hot-loader";
 
-const GreetingComponent = () => {
+const App = () => {
   const [recv, setRecv] = useState([]);
 
   useEffect(() => {
@@ -22,8 +22,9 @@ const GreetingComponent = () => {
       {recv.map((msg) => (
         <p>{msg}</p>
       ))}
+      <button>Test</button>
     </div>
   );
 };
 
-export default hot(module)(GreetingComponent);
+export default hot(module)(App);
