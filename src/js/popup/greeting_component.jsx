@@ -1,16 +1,29 @@
-import React from "react";
-import icon from "../../img/icon-128.png"
+import React, { useEffect, useState } from "react";
+import icon from "../../img/icon-128.png";
 import { hot } from "react-hot-loader";
 
-class GreetingComponent extends React.Component {
-  render () {
-    return (
-      <div>
-        <p>Hello, find me on src/js/popup/greeting_component.jsx</p>
-        <img src={icon} />
-      </div>
-    )
-  }
+const GreetingComponent = () => {
+  const [recv, setRecv] = useState([]);
+
+  useEffect(() => {
+    const listener = (request, sender, sendResponse) => {
+      if (request.msg === "something_completed") {
+        //  To do something
+        setRecv((recv) => [...recv, request.data.content]);
+      }
+    };
+
+    chrome.runtime.onMessage.addListener(listener);
+    return () => chrome.runtime.onMessage.removeListener(listener);
+  }, []);
+
+  return (
+    <div>
+      {recv.map((msg) => (
+        <p>{msg}</p>
+      ))}
+    </div>
+  );
 };
 
-export default hot(module)(GreetingComponent)
+export default hot(module)(GreetingComponent);
