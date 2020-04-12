@@ -21,7 +21,7 @@ This contains the viewer frontend and the server.
 
 ## Libraries used
 
-- A fork of rrweb (with fixes for live streaming event timing): https://github.com/yunyu/rrweb. We use this, in conjunction with some special snapshotting and replay code to make live sessions joinable instantly.
+- We use a fork of rrweb (https://github.com/yunyu/rrweb) that adds support for fast-forward-from-checkpoint and replay events after playback is finished (to support the live sharing functionality).
 - Chrome extension boilerplate with React: https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate
 
 # Building
