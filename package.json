@@ -7,7 +7,7 @@
     "start": "node utils/webserver.js"
   },
   "dependencies": {
-    "@yunyu/rrweb-patched": "^0.7.33",
+    "@yunyu/rrweb-patched": "^0.7.34-hack",
     "cuid": "^2.1.8",
     "lodash.debounce": "^4.0.8",
     "react": "16.12.0",
