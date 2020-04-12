@@ -1,2 +1,2 @@
-export const SERVER_URL = "localhost:8082";
-export const SERVER_SECURE = false;
+export const SERVER_URL = "manted-uswest.caldera.app";
+export const SERVER_SECURE = true;
