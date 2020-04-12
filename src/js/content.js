@@ -7,12 +7,13 @@ let stopFn = null;
 let queue = [];
 const debouncedFlush = debounce(
   () => {
+    console.log(queue);
     queue = [];
   },
-  50,
+  40,
   {
     leading: true,
-    maxWait: 100,
+    maxWait: 60,
   }
 );
 
