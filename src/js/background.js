@@ -30,9 +30,23 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
     if (portForCurrentActiveTab) {
       portForCurrentActiveTab.postMessage({ action: "stopRecording" });
     }
-  }
 
-  currentActiveTab = newActiveTab;
+    currentActiveTab = newActiveTab;
+
+    const portForNewActiveTab = portsForTabs.get(newActiveTab);
+    if (portForNewActiveTab && connectionState.status === "HOSTING") {
+      console.log(
+        "Port for new active tab exists and connection state is hosting!"
+      );
+      portForNewActiveTab.postMessage({ action: "startRecording" });
+    } else {
+      console.log(
+        "Port does not exist or connection is not hosting!",
+        portForNewActiveTab,
+        connectionState.status === "HOSTING"
+      );
+    }
+  }
 });
 
 const portsForTabs = new Map();
