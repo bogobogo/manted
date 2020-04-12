@@ -73,7 +73,7 @@ chrome.runtime.onConnect.addListener((port) => {
           });
         } else {
           portForActiveTab.postMessage({ action: "stopRecording" });
-          ws.close();
+          ws && ws.close();
           ws = null;
         }
       }
