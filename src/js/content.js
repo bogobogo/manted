@@ -35,7 +35,7 @@ port.onMessage.addListener((msg) => {
           debouncedFlush.flush();
         }
       },
-      checkoutEveryNth: 200,
+      checkoutEveryNth: 100,
     });
   } else if (msg.action === "stopRecording") {
     stopFn && stopFn();
