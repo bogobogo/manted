@@ -7,3 +7,7 @@ Screen sharing quality can suck, especially for people on weaker connections. Th
 What if instead of streaming video frames from the screen, we only streamed partial DOM updates from websites? That way, we can reproduce pixel-perfect versions of your active Chrome tab with extremely low latency and bandwidth consumption.
 
 Welcome to Manted.
+
+# Backend repository
+
+https://github.com/calderajs/manted-server

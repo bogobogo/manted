@@ -7,7 +7,8 @@ let stopFn = null;
 let queue = [];
 const debouncedFlush = debounce(
   () => {
-    console.log(queue);
+    port.postMessage(queue);
+    console.log(queue.some(([, isCheckout]) => isCheckout));
     queue = [];
   },
   40,

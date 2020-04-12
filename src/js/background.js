@@ -3,11 +3,12 @@ import "../img/icon-34.png";
 
 /* 
 type ConnectionState = {
-    status: "HOSTING" | "VIEWING"
+    status: "HOSTING"
     roomName: string
 } | { status: "DISCONNECTED" }
 */
 let connectionState = { status: "DISCONNECTED" };
+let ws = null;
 
 /*
 STRING { tabId?: number, windowId?: number }
@@ -42,12 +43,25 @@ chrome.runtime.onConnect.addListener((port) => {
     port.onMessage.addListener((newConnectionState) => {
       connectionState = newConnectionState;
 
+      // Always assume there is port for active tab
       const portForActiveTab = portsForTabs.get(currentActiveTab);
       if (portForActiveTab) {
         if (newConnectionState.status === "HOSTING") {
-          portForActiveTab.postMessage({ action: "startRecording" });
+          ws = new WebSocket("ws://localhost:8082");
+          console.log("ws init");
+          ws.addEventListener("open", () => {
+            ws.send(
+              JSON.stringify({
+                type: "makeRoom",
+                roomName: newConnectionState.roomName,
+              })
+            );
+            portForActiveTab.postMessage({ action: "startRecording" });
+          });
         } else {
           portForActiveTab.postMessage({ action: "stopRecording" });
+          ws.close();
+          ws = null;
         }
       }
     });
@@ -57,6 +71,12 @@ chrome.runtime.onConnect.addListener((port) => {
       windowId: port.sender.tab.windowId,
     });
     portsForTabs.set(tabInfo, port);
+
+    port.onMessage.addListener((frames) => {
+      if (tabInfo === currentActiveTab && ws) {
+        ws.send(JSON.stringify({ type: "frames", frames }));
+      }
+    });
     port.onDisconnect.addListener(() => portsForTabs.delete(tabInfo));
 
     console.log("Content script connect", tabInfo, currentActiveTab);
