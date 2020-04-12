@@ -20,7 +20,7 @@ const ToolTip = ({ text }) => {
   );
 };
 
-const HostView = ({ roomName, onStop, viewerCount }) => {
+const HostView = ({ roomName, onStop }) => {
   const [toolTip, setToolTip] = useState("");
   return (
     <div
@@ -59,7 +59,6 @@ const HostView = ({ roomName, onStop, viewerCount }) => {
       >
         Stop sharing
       </button>
-      <div>{viewerCount} connected</div>
     </div>
   );
 };
@@ -69,7 +68,6 @@ const App = () => {
   // undefined | { connected: boolean, hosting: boolean, roomName: string }
   const [room, updateRoom] = useState(undefined);
   const [roomCode, setRoomCode] = useState("");
-  const [viewerCount, setViewerCount] = useState(0);
 
   const setRoom = (room) => {
     console.log("setroom called");
@@ -80,15 +78,7 @@ const App = () => {
   useEffect(() => {
     console.log("connecting");
     socket.current = chrome.runtime.connect({ name: "popup" });
-    socket.current.onMessage.addListener((msg) => {
-      console.log("received msg from popup", msg);
-
-      if (msg.type === "viewerCount") {
-        setViewerCount(msg.value);
-      } else {
-        updateRoom(msg);
-      }
-    });
+    socket.current.onMessage.addListener((msg) => updateRoom(msg));
   }, []);
 
   return room ? (
@@ -97,7 +87,6 @@ const App = () => {
         room.status === "HOSTING" ? (
           <HostView
             roomName={room.roomName}
-            viewerCount={viewerCount}
             onStop={() => {
               setRoom({ status: "DISCONNECTED" });
             }}

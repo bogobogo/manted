@@ -69,8 +69,6 @@ chrome.runtime.onConnect.addListener((port) => {
             console.log(msg);
             const { type, ...message } = JSON.parse(msg.data);
             if (type === "viewerCount") {
-              console.log("vc", message.value);
-              port.postMessage({ type, value: message.value });
               chrome.browserAction.setBadgeText({ text: "" + message.value });
             }
           });
