@@ -13,8 +13,8 @@ const HostView = ({ roomName, onStop }) => {
         alignItems: "center",
       }}
     >
-      <div style={{ display: "flex", margin: "12px 12px 0px 12px" }}>
-        <span style={{ paddingRight: "6px" }}>Hosting</span>
+      <div style={{ display: "flex", margin: "12px 12px 6px 12px" }}>
+        <span style={{ paddingRight: "6px" }}>Meeting Code:</span>
         <span
           style={{ fontWeight: "bold", cursor: "pointer" }}
           onClick={() => {
@@ -31,14 +31,18 @@ const HostView = ({ roomName, onStop }) => {
           showCopied
             ? {
                 transition: "opacity .4s",
-                opacity: ".8",
+                opacity: ".5",
               }
             : { transition: "opacity .4s", opacity: "0" }
         }
       >
         copied!
       </div>
-      <button class="error" style={{ width: "100%" }} onClick={onStop}>
+      <button
+        class="error"
+        style={{ width: "100%", marginTop: "6px" }}
+        onClick={onStop}
+      >
         Stop sharing
       </button>
     </div>
