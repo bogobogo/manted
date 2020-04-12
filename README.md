@@ -1,6 +1,6 @@
 # Manted
 
-## Demo
+## Demo Video (click image)
 
 [![](http://i3.ytimg.com/vi/TXcXdxd7H74/maxresdefault.jpg)](https://www.youtube.com/watch?v=TXcXdxd7H74)
 https://www.youtube.com/watch?v=TXcXdxd7H74
