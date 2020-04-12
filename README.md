@@ -2,8 +2,8 @@
 
 ## Demo Video (click image)
 
-[![](http://i3.ytimg.com/vi/TXcXdxd7H74/maxresdefault.jpg)](https://www.youtube.com/watch?v=TXcXdxd7H74)
-https://www.youtube.com/watch?v=TXcXdxd7H74
+[![](https://i.imgur.com/paP2uvT.png)](https://www.youtube.com/watch?v=1gsWWY56H6o)
+https://www.youtube.com/watch?v=1gsWWY56H6o
 
 Screen sharing quality can suck, especially for people on weaker connections. This is because most screen sharing implementations are encoding the screen as video frames, compressing them, sending them over the wire, and then decompressing them. This takes up a lot of additional latency (which must be traded off with quality), and lossy compression frequently makes things unreadable (this is particularly an issue with Tandem recently):
 
