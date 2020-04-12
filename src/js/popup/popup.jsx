@@ -18,6 +18,7 @@ const App = () => {
   const socket = useRef(null);
   // undefined | { connected: boolean, hosting: boolean, roomName: string }
   const [room, updateRoom] = useState(undefined);
+  const [roomCode, setRoomCode] = useState("");
   const setRoom = (room) => {
     console.log("setroom called");
     updateRoom(room);
@@ -55,8 +56,21 @@ const App = () => {
               borderBottom: "1px solid #ccc",
             }}
           >
-            <input type="text" placeholder="Enter room code" />
-            <button style={{ flexShrink: 0, margin: 0, marginLeft: 8 }}>
+            <input
+              value={roomCode}
+              type="text"
+              placeholder="Enter room code"
+              onChange={(e) => setRoomCode(e.target.value)}
+            />
+            <button
+              style={{ flexShrink: 0, margin: 0, marginLeft: 8 }}
+              onClick={() =>
+                window.open(
+                  "http://localhost:8082/?roomName=" + roomCode,
+                  "_blank"
+                )
+              }
+            >
               Join
             </button>
           </div>
