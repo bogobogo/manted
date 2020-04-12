@@ -34,14 +34,18 @@ const HostView = ({ roomName, onStop }) => {
       {toolTip != "" ? <ToolTip text={toolTip} /> : <></>}
       <div
         onMouseEnter={() => {
-          setToolTip("click to copy");
+          setToolTip("Click to copy link");
         }}
         onMouseLeave={() => {
           setToolTip("");
         }}
         onClick={() => {
-          navigator.clipboard.writeText(roomName);
-          setToolTip("copied!");
+          navigator.clipboard.writeText(
+            `${
+              SERVER_SECURE ? "https" : "http"
+            }://${SERVER_URL}/?roomName=${roomCode}`
+          );
+          setToolTip("Copied!");
         }}
         style={{
           display: "flex",
@@ -118,7 +122,7 @@ const App = () => {
                   window.open(
                     `${
                       SERVER_SECURE ? "https" : "http"
-                    }://${SERVER_URL}/?roomName=` + roomCode,
+                    }://${SERVER_URL}/?roomName=${roomCode}`,
                     "_blank"
                   );
                 }
