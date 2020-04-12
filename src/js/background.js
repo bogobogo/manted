@@ -13,6 +13,7 @@ let ws = null;
 /*
 STRING { tabId?: number, windowId?: number }
 */
+
 let currentActiveTab = "";
 const getTabKey = (tabInfo) => [tabInfo.tabId, tabInfo.windowId].join(",");
 
@@ -68,7 +69,9 @@ chrome.runtime.onConnect.addListener((port) => {
             console.log(msg);
             const { type, ...message } = JSON.parse(msg.data);
             if (type === "viewerCount") {
+              console.log("vc", message.value);
               port.postMessage({ type, value: message.value });
+              chrome.browserAction.setBadgeText({ text: "" + message.value });
             }
           });
         } else {
