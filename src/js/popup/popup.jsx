@@ -13,6 +13,8 @@ const HostView = ({ roomName, onStop }) => {
         alignItems: "center",
       }}
     >
+      <div style={{ position: "absolute", top: "0" }}>click to copy</div>
+
       <div style={{ display: "flex", margin: "12px 12px 6px 12px" }}>
         <span style={{ paddingRight: "6px" }}>Meeting Code:</span>
         <span

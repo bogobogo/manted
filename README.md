@@ -8,6 +8,10 @@ What if instead of streaming video frames from the screen, we only streamed part
 
 Welcome to Manted.
 
+# Demo
+
+![](img/demo.gif)
+
 # Backend repository
 
 https://github.com/calderajs/manted-server
