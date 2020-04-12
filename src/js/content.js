@@ -22,13 +22,13 @@ port.onMessage.addListener((msg) => {
   if (msg.action === "startRecording") {
     stopFn = rrweb.record({
       emit(event, isCheckout) {
-        queue.push([event, isCheckout]);
+        queue.push([event, isCheckout !== undefined]);
         debouncedFlush();
         if (isCheckout !== undefined) {
           debouncedFlush.flush();
         }
       },
-      checkoutEveryNth: 100,
+      checkoutEveryNth: 200,
     });
   } else if (msg.action === "stopRecording") {
     stopFn && stopFn();
