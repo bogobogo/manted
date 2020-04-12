@@ -4,10 +4,47 @@ import { hot } from "react-hot-loader";
 import cuid from "cuid";
 
 const HostView = ({ roomName, onStop }) => {
+  const [showCopied, setShowCopied] = useState(false);
   return (
-    <div>
-      <div>Hosting {roomName}</div>
-      <button class="error" style={{ width: "100%" }} onClick={onStop}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <div style={{ position: "absolute", top: "0" }}>click to copy</div>
+
+      <div style={{ display: "flex", margin: "12px 12px 6px 12px" }}>
+        <span style={{ paddingRight: "6px" }}>Meeting Code:</span>
+        <span
+          style={{ fontWeight: "bold", cursor: "pointer" }}
+          onClick={() => {
+            navigator.clipboard.writeText(roomName);
+            setShowCopied(true);
+            setTimeout(() => setShowCopied(false), 1500);
+          }}
+        >
+          {roomName}
+        </span>
+      </div>
+      <div
+        style={
+          showCopied
+            ? {
+                transition: "opacity .4s",
+                opacity: ".5",
+              }
+            : { transition: "opacity .4s", opacity: "0" }
+        }
+      >
+        copied!
+      </div>
+      <button
+        class="error"
+        style={{ width: "100%", marginTop: "6px" }}
+        onClick={onStop}
+      >
         Stop sharing
       </button>
     </div>
@@ -64,12 +101,14 @@ const App = () => {
             />
             <button
               style={{ flexShrink: 0, margin: 0, marginLeft: 8 }}
-              onClick={() =>
-                window.open(
-                  "http://localhost:8082/?roomName=" + roomCode,
-                  "_blank"
-                )
-              }
+              onClick={() => {
+                if (roomCode != "") {
+                  window.open(
+                    "http://localhost:8082/?roomName=" + roomCode,
+                    "_blank"
+                  );
+                }
+              }}
             >
               Join
             </button>
