@@ -1,5 +1,6 @@
 import "../img/icon-128.png";
 import "../img/icon-34.png";
+import { SERVER_URL, SERVER_SECURE } from "./constants";
 
 /* 
 type ConnectionState = {
@@ -53,7 +54,7 @@ chrome.runtime.onConnect.addListener((port) => {
       const portForActiveTab = portsForTabs.get(currentActiveTab);
       if (portForActiveTab) {
         if (newConnectionState.status === "HOSTING") {
-          ws = new WebSocket("ws://localhost:8082");
+          ws = new WebSocket(`${SERVER_SECURE ? "wss" : "ws"}://${SERVER_URL}`);
           console.log("ws init");
           ws.addEventListener("open", () => {
             ws.send(

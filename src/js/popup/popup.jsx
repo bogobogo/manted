@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { hot } from "react-hot-loader";
 import cuid from "cuid";
+import { SERVER_URL, SERVER_SECURE } from "../constants";
 
 const ToolTip = ({ text }) => {
   return (
@@ -115,7 +116,9 @@ const App = () => {
               onClick={() => {
                 if (roomCode != "") {
                   window.open(
-                    "http://localhost:8082/?roomName=" + roomCode,
+                    `${
+                      SERVER_SECURE ? "https" : "http"
+                    }://${SERVER_URL}/?roomName=` + roomCode,
                     "_blank"
                   );
                 }
