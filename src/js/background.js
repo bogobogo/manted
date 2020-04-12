@@ -69,11 +69,14 @@ chrome.runtime.onConnect.addListener((port) => {
             console.log(msg);
             const { type, ...message } = JSON.parse(msg.data);
             if (type === "viewerCount") {
-              chrome.browserAction.setBadgeText({ text: "" + message.value });
+              chrome.browserAction.setBadgeText({
+                text: message.value.toString(),
+              });
             }
           });
         } else {
           portForActiveTab.postMessage({ action: "stopRecording" });
+          chrome.browserAction.setBadgeText({ text: "" });
           ws && ws.close();
           ws = null;
         }
