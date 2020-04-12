@@ -4,18 +4,17 @@ import debounce from "lodash.debounce";
 const port = chrome.runtime.connect({ name: "tab" });
 let stopFn = null;
 
+let queue = [];
+const flush = () => {
+  queue = [];
+};
+const debouncedFlush = debounce(flush, 50, {
+  leading: true,
+  maxWait: 100,
+});
+
 port.onMessage.addListener((msg) => {
   if (msg.action === "startRecording") {
-    let queue = [];
-
-    const flush = () => {
-      queue = [];
-    };
-    const debouncedFlush = debounce(flush, 50, {
-      leading: true,
-      maxWait: 100,
-    });
-
     stopFn = rrweb.record({
       emit(event, isCheckout) {
         queue.push([event, isCheckout]);
