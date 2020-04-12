@@ -13,6 +13,10 @@ What if instead of streaming video frames from the screen, we only streamed part
 
 Welcome to Manted.
 
+## Installing
+
+See the [releases page](https://github.com/calderajs/manted/releases)
+
 ## Server repository
 
 https://github.com/calderajs/manted-server
