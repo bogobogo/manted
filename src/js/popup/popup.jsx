@@ -44,8 +44,8 @@ const HostView = ({ roomName, onStop }) => {
         }}
         style={{
           display: "flex",
-          marginTop: "16px",
-          marginBottom: "24px",
+          marginTop: "18px",
+          marginBottom: "32px",
           cursor: "pointer",
         }}
       >
