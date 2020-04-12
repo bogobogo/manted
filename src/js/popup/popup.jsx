@@ -20,9 +20,8 @@ const ToolTip = ({ text }) => {
   );
 };
 
-const HostView = ({ roomName, onStop }) => {
+const HostView = ({ roomName, onStop, viewerCount }) => {
   const [toolTip, setToolTip] = useState("");
-  const [viewerCount, setViewerCount] = useState(0);
   return (
     <div
       style={{
@@ -70,6 +69,8 @@ const App = () => {
   // undefined | { connected: boolean, hosting: boolean, roomName: string }
   const [room, updateRoom] = useState(undefined);
   const [roomCode, setRoomCode] = useState("");
+  const [viewerCount, setViewerCount] = useState(0);
+
   const setRoom = (room) => {
     console.log("setroom called");
     updateRoom(room);
@@ -81,7 +82,12 @@ const App = () => {
     socket.current = chrome.runtime.connect({ name: "popup" });
     socket.current.onMessage.addListener((msg) => {
       console.log("received msg from popup", msg);
-      updateRoom(msg);
+
+      if (msg.type === "viewerCount") {
+        setViewerCount(msg.value);
+      } else {
+        updateRoom(msg);
+      }
     });
   }, []);
 
@@ -91,6 +97,7 @@ const App = () => {
         room.status === "HOSTING" ? (
           <HostView
             roomName={room.roomName}
+            viewerCount={viewerCount}
             onStop={() => {
               setRoom({ status: "DISCONNECTED" });
             }}

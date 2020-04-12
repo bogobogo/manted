@@ -63,6 +63,14 @@ chrome.runtime.onConnect.addListener((port) => {
             );
             portForActiveTab.postMessage({ action: "startRecording" });
           });
+
+          ws.addEventListener("message", (msg) => {
+            console.log(msg);
+            const { type, ...message } = JSON.parse(msg.data);
+            if (type === "viewerCount") {
+              port.postMessage({ type, value: message.value });
+            }
+          });
         } else {
           portForActiveTab.postMessage({ action: "stopRecording" });
           ws.close();
