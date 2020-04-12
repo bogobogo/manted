@@ -18,6 +18,8 @@ const debouncedFlush = debounce(
   }
 );
 
+let queueImmediateFlush = false;
+
 port.onMessage.addListener((msg) => {
   console.log("Received action ", msg.action);
   if (msg.action === "startRecording") {
@@ -26,6 +28,10 @@ port.onMessage.addListener((msg) => {
         queue.push([event, isCheckout !== undefined]);
         debouncedFlush();
         if (isCheckout !== undefined) {
+          queueImmediateFlush = true;
+        }
+        if (queueImmediateFlush) {
+          queueImmediateFlush = false;
           debouncedFlush.flush();
         }
       },
