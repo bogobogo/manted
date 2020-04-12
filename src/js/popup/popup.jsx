@@ -43,7 +43,7 @@ const HostView = ({ roomName, onStop }) => {
           navigator.clipboard.writeText(
             `${
               SERVER_SECURE ? "https" : "http"
-            }://${SERVER_URL}/?roomName=${roomCode}`
+            }://${SERVER_URL}/?roomName=${roomName}`
           );
           setToolTip("Copied!");
         }}
