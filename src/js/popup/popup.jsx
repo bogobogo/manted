@@ -3,8 +3,27 @@ import icon from "../../img/icon-128.png";
 import { hot } from "react-hot-loader";
 import cuid from "cuid";
 
+const ToolTip = ({ top, text, opacity }) => {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: "10px",
+        borderRadius: "4px",
+        background: "#555555",
+        color: "white",
+        padding: "2px 4px",
+        fontSize: "12px",
+      }}
+    >
+      {text}
+    </div>
+  );
+};
+
 const HostView = ({ roomName, onStop }) => {
-  const [showCopied, setShowCopied] = useState(false);
+  const [toolTip, setToolTip] = useState("");
+
   return (
     <div
       style={{
@@ -13,33 +32,28 @@ const HostView = ({ roomName, onStop }) => {
         alignItems: "center",
       }}
     >
-      <div style={{ position: "absolute", top: "0" }}>click to copy</div>
-
-      <div style={{ display: "flex", margin: "12px 12px 6px 12px" }}>
-        <span style={{ paddingRight: "6px" }}>Meeting Code:</span>
-        <span
-          style={{ fontWeight: "bold", cursor: "pointer" }}
-          onClick={() => {
-            navigator.clipboard.writeText(roomName);
-            setShowCopied(true);
-            setTimeout(() => setShowCopied(false), 1500);
-          }}
-        >
-          {roomName}
-        </span>
-      </div>
+      {toolTip != "" ? <ToolTip text={toolTip} /> : <></>}
       <div
-        style={
-          showCopied
-            ? {
-                transition: "opacity .4s",
-                opacity: ".5",
-              }
-            : { transition: "opacity .4s", opacity: "0" }
-        }
+        onMouseEnter={() => {
+          setToolTip("click to copy");
+        }}
+        onMouseLeave={() => {
+          setToolTip("");
+        }}
+        onClick={() => {
+          navigator.clipboard.writeText(roomName);
+          setToolTip("copied!");
+        }}
+        style={{
+          display: "flex",
+          margin: "12px 12px 6px 12px",
+          cursor: "pointer",
+        }}
       >
-        copied!
+        <span style={{ paddingRight: "6px" }}>Meeting Code:</span>
+        <span style={{ fontWeight: "bold" }}>{roomName}</span>
       </div>
+
       <button
         class="error"
         style={{ width: "100%", marginTop: "6px" }}
