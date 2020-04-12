@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import icon from "../../img/icon-128.png";
 import { hot } from "react-hot-loader";
 import cuid from "cuid";
 
-const ToolTip = ({ top, text, opacity }) => {
+const ToolTip = ({ text }) => {
   return (
     <div
       style={{
@@ -23,7 +22,7 @@ const ToolTip = ({ top, text, opacity }) => {
 
 const HostView = ({ roomName, onStop }) => {
   const [toolTip, setToolTip] = useState("");
-
+  const [viewerCount, setViewerCount] = useState(0);
   return (
     <div
       style={{
@@ -61,6 +60,7 @@ const HostView = ({ roomName, onStop }) => {
       >
         Stop sharing
       </button>
+      <div>{viewerCount} connected</div>
     </div>
   );
 };
