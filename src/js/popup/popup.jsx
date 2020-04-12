@@ -95,12 +95,14 @@ const App = () => {
             />
             <button
               style={{ flexShrink: 0, margin: 0, marginLeft: 8 }}
-              onClick={() =>
-                window.open(
-                  "http://localhost:8082/?roomName=" + roomCode,
-                  "_blank"
-                )
-              }
+              onClick={() => {
+                if (roomCode != "") {
+                  window.open(
+                    "http://localhost:8082/?roomName=" + roomCode,
+                    "_blank"
+                  );
+                }
+              }}
             >
               Join
             </button>
