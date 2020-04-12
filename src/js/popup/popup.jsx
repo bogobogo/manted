@@ -4,9 +4,40 @@ import { hot } from "react-hot-loader";
 import cuid from "cuid";
 
 const HostView = ({ roomName, onStop }) => {
+  const [showCopied, setShowCopied] = useState(false);
   return (
-    <div>
-      <div>Hosting {roomName}</div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <div style={{ display: "flex", margin: "12px 12px 0px 12px" }}>
+        <span style={{ paddingRight: "6px" }}>Hosting</span>
+        <span
+          style={{ fontWeight: "bold", cursor: "pointer" }}
+          onClick={() => {
+            navigator.clipboard.writeText(roomName);
+            setShowCopied(true);
+            setTimeout(() => setShowCopied(false), 1500);
+          }}
+        >
+          {roomName}
+        </span>
+      </div>
+      <div
+        style={
+          showCopied
+            ? {
+                transition: "opacity .4s",
+                opacity: ".8",
+              }
+            : { transition: "opacity .4s", opacity: "0" }
+        }
+      >
+        copied!
+      </div>
       <button class="error" style={{ width: "100%" }} onClick={onStop}>
         Stop sharing
       </button>
