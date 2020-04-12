@@ -11,3 +11,8 @@ Welcome to Manted.
 # Backend repository
 
 https://github.com/calderajs/manted-server
+
+# Libraries used
+
+- A fork of rrweb (with fixes for live streaming event timing): https://github.com/yunyu/rrweb
+- Chrome extension boilerplate with React: https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate
