@@ -1,3 +1,5 @@
 node_modules
 build
 secrets.*.js
+zipped_builds
+.DS_Store
